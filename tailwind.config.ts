@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,11 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				spanish: {
+					orange: '#FF5913',
+					teal: '#1DD3B0',
+					cream: '#F7F4EE'
 				}
 			},
 			borderRadius: {
@@ -84,11 +90,41 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'slide-in-right': {
+					'0%': {
+						transform: 'translateX(100%)',
+						opacity: '0'
+					},
+					'100%': {
+						transform: 'translateX(0)',
+						opacity: '1'
+					}
+				},
+				'fade-in': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(10px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
+				},
+				'confetti': {
+					'0%': { transform: 'translateY(-100vh) rotate(0deg)', opacity: '1' },
+					'100%': { transform: 'translateY(100vh) rotate(360deg)', opacity: '0' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'slide-in-right': 'slide-in-right 0.3s ease-out',
+				'fade-in': 'fade-in 0.3s ease-out',
+				'confetti': 'confetti 3s linear infinite'
+			},
+			fontFamily: {
+				'kumbh': ['Kumbh Sans', 'sans-serif']
 			}
 		}
 	},

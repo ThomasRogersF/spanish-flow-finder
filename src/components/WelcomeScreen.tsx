@@ -1,11 +1,39 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import InfluencerBox from './InfluencerBox';
 
 interface WelcomeScreenProps {
   onStart: () => void;
 }
 
+interface InfluencerData {
+  name: string;
+  discount: string;
+  code: string;
+  image?: string;
+}
+
 const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart }) => {
+  const [influencerData, setInfluencerData] = useState<InfluencerData | null>(null);
+
+  useEffect(() => {
+    // Parse URL parameters for influencer data
+    const urlParams = new URLSearchParams(window.location.search);
+    const influencerName = urlParams.get('influencer');
+    const discount = urlParams.get('discount');
+    const code = urlParams.get('code');
+    const image = urlParams.get('image');
+
+    if (influencerName && discount && code) {
+      setInfluencerData({
+        name: influencerName,
+        discount: discount,
+        code: code,
+        image: image || undefined
+      });
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-spanish-cream flex items-center justify-center p-4">
       <div className="max-w-2xl mx-auto text-center animate-fade-in">
@@ -17,6 +45,8 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart }) => {
             Answer a few quick questions and we'll recommend the ideal SpanishVIP learning path for your goals, schedule, and learning style.
           </p>
         </div>
+
+        <InfluencerBox influencerData={influencerData} />
         
         <div className="bg-white rounded-2xl p-8 card-shadow mb-8">
           <div className="grid md:grid-cols-3 gap-6 text-center">

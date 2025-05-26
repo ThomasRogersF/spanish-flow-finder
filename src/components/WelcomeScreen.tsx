@@ -37,6 +37,15 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart }) => {
   return (
     <div className="min-h-screen bg-spanish-cream flex items-center justify-center p-4">
       <div className="max-w-2xl mx-auto text-center animate-fade-in">
+        {/* Logo */}
+        <div className="mb-8">
+          <img 
+            src="https://lwfiles.mycourse.app/6409eb5798e53550d7acd5f1-public/1bfa7bb23c37499f0d5908f0a004c50e.png" 
+            alt="SpanishVIP Logo"
+            className="h-16 mx-auto mb-6"
+          />
+        </div>
+
         <div className="mb-8">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             Let's find your perfect Spanish plan!

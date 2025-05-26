@@ -26,6 +26,15 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
   return (
     <div className="min-h-screen bg-spanish-cream flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-2xl mx-auto">
+        {/* Logo */}
+        <div className="text-center mb-6">
+          <img 
+            src="https://lwfiles.mycourse.app/6409eb5798e53550d7acd5f1-public/1bfa7bb23c37499f0d5908f0a004c50e.png" 
+            alt="SpanishVIP Logo"
+            className="h-12 mx-auto"
+          />
+        </div>
+
         {currentStep > 1 && (
           <button
             onClick={onGoBack}

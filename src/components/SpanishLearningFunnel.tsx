@@ -4,6 +4,7 @@ import { QuestionnaireState, Question, PLANS } from '../types/questionnaire';
 import WelcomeScreen from './WelcomeScreen';
 import QuestionScreen from './QuestionScreen';
 import LeadCaptureScreen from './LeadCaptureScreen';
+import LoadingScreen from './LoadingScreen';
 import RecommendationLanding from './RecommendationLanding';
 import SuccessModal from './SuccessModal';
 
@@ -21,13 +22,14 @@ const SpanishLearningFunnel: React.FC = () => {
   });
   
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Question data - content team can easily update these placeholders
   const questions: Question[] = [
     {
       id: 'q1',
       title: "What's your main goal for learning Spanish?",
-      subtitle: 'Q1_PLACEHOLDER',
+      subtitle: 'Select the option that best describes your learning objective',
       options: [
         { id: 'personal', text: 'Personal 1-to-1 attention', icon: '👨‍🏫' },
         { id: 'budget', text: 'Budget / social learning', icon: '👥' },
@@ -38,7 +40,7 @@ const SpanishLearningFunnel: React.FC = () => {
     {
       id: 'q2',
       title: 'How do you prefer to learn?',
-      subtitle: 'Q2_PLACEHOLDER',
+      subtitle: 'Choose your preferred learning style',
       options: [
         { id: 'flexible', text: 'Flexible schedule', icon: '⏰' },
         { id: 'structured', text: 'Structured classes', icon: '📚' },
@@ -49,7 +51,7 @@ const SpanishLearningFunnel: React.FC = () => {
     {
       id: 'q3',
       title: "What's your current Spanish level?",
-      subtitle: 'Q3_PLACEHOLDER',
+      subtitle: 'Help us understand your starting point',
       options: [
         { id: 'beginner', text: 'Complete beginner', icon: '🌱' },
         { id: 'basic', text: 'Basic (some words/phrases)', icon: '📖' },
@@ -60,7 +62,7 @@ const SpanishLearningFunnel: React.FC = () => {
     {
       id: 'q4',
       title: 'How much time can you dedicate per week?',
-      subtitle: 'Q4_PLACEHOLDER',
+      subtitle: 'Select your available time commitment',
       options: [
         { id: 'light', text: '1-2 hours (light commitment)', icon: '⏱️' },
         { id: 'moderate', text: '3-5 hours (moderate pace)', icon: '📅' },
@@ -132,14 +134,21 @@ const SpanishLearningFunnel: React.FC = () => {
   };
 
   const handleLeadCapture = (userData: QuestionnaireState['userData']) => {
-    const recommendedPlan = calculateRecommendation(state.answers);
+    setIsLoading(true);
     
-    setState(prev => ({
-      ...prev,
-      userData,
-      recommendedPlan,
-      currentStep: prev.currentStep + 1
-    }));
+    // Simulate analysis time
+    setTimeout(() => {
+      const recommendedPlan = calculateRecommendation(state.answers);
+      
+      setState(prev => ({
+        ...prev,
+        userData,
+        recommendedPlan,
+        currentStep: prev.currentStep + 1
+      }));
+      
+      setIsLoading(false);
+    }, 3000); // 3 seconds loading
   };
 
   const handleStartTrial = () => {
@@ -149,6 +158,11 @@ const SpanishLearningFunnel: React.FC = () => {
   const handleCloseSuccessModal = () => {
     setShowSuccessModal(false);
   };
+
+  // Show loading screen
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   // Welcome screen
   if (state.currentStep === 0) {

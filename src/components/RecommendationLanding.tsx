@@ -91,10 +91,28 @@ const RecommendationLanding: React.FC<RecommendationLandingProps> = ({ state, on
 
   return (
     <div className="min-h-screen bg-spanish-cream">
+      {/* Logo */}
+      <div className="pt-8 text-center">
+        <img 
+          src="https://lwfiles.mycourse.app/6409eb5798e53550d7acd5f1-public/1bfa7bb23c37499f0d5908f0a004c50e.png" 
+          alt="SpanishVIP Logo"
+          className="h-12 mx-auto mb-4"
+        />
+      </div>
+
       {/* Hero Section */}
-      <div className="pt-12 pb-8">
+      <div className="pt-4 pb-8">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <div className="animate-fade-in">
+            {/* Featured Image */}
+            <div className="mb-8">
+              <img 
+                src="https://spanishvip.com/wp-content/uploads/2025/04/private-tutoring.jpg" 
+                alt="Spanish Learning"
+                className="w-full max-w-md mx-auto rounded-2xl card-shadow"
+              />
+            </div>
+
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               🎉 You're a perfect fit for {state.recommendedPlan}!
             </h1>

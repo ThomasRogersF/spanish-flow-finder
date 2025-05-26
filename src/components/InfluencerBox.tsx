@@ -34,11 +34,11 @@ const InfluencerBox: React.FC<InfluencerBoxProps> = ({ influencerData }) => {
           )}
         </div>
         <div className="flex-1">
-          <p className="text-gray-700 mb-2">
+          <p className="text-gray-700 mb-2 text-sm text-justify leading-relaxed">
             Welcome <span className="font-semibold text-spanish-teal">{influencerData.name}</span> visitors! Get started today and enjoy{' '}
             <span className="font-bold text-spanish-orange">{influencerData.discount}</span> your first month.
           </p>
-          <p className="text-sm text-gray-600">
+          <p className="text-xs text-gray-600 text-justify">
             Discount code "<span className="font-mono bg-gray-100 px-2 py-1 rounded">{influencerData.code}</span>" will be automatically applied.
           </p>
         </div>

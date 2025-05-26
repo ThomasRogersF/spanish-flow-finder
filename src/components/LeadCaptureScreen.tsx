@@ -45,6 +45,15 @@ const LeadCaptureScreen: React.FC<LeadCaptureScreenProps> = ({
   return (
     <div className="min-h-screen bg-spanish-cream flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-2xl mx-auto">
+        {/* Logo */}
+        <div className="text-center mb-6">
+          <img 
+            src="https://lwfiles.mycourse.app/6409eb5798e53550d7acd5f1-public/1bfa7bb23c37499f0d5908f0a004c50e.png" 
+            alt="SpanishVIP Logo"
+            className="h-12 mx-auto"
+          />
+        </div>
+
         <button
           onClick={onGoBack}
           className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4 transition-colors"

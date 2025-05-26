@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { ChevronLeft } from 'lucide-react';
 import { Question } from '../types/questionnaire';
 import ProgressBar from './ProgressBar';
 
@@ -8,13 +9,15 @@ interface QuestionScreenProps {
   currentStep: number;
   totalSteps: number;
   onAnswer: (questionId: string, answer: string) => void;
+  onGoBack: () => void;
 }
 
 const QuestionScreen: React.FC<QuestionScreenProps> = ({ 
   question, 
   currentStep, 
   totalSteps, 
-  onAnswer 
+  onAnswer,
+  onGoBack
 }) => {
   const handleOptionClick = (optionId: string, optionText: string) => {
     onAnswer(question.id, optionText);
@@ -23,6 +26,16 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
   return (
     <div className="min-h-screen bg-spanish-cream flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-2xl mx-auto">
+        {currentStep > 1 && (
+          <button
+            onClick={onGoBack}
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4 transition-colors"
+          >
+            <ChevronLeft size={20} />
+            Go back
+          </button>
+        )}
+        
         <ProgressBar currentStep={currentStep} totalSteps={totalSteps} />
         
         <div className="animate-slide-in-right">

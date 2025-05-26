@@ -26,46 +26,46 @@ const SpanishLearningFunnel: React.FC = () => {
   const questions: Question[] = [
     {
       id: 'q1',
-      title: '**What\'s your main goal for learning Spanish?**',
-      subtitle: '**Q1_PLACEHOLDER**',
+      title: "What's your main goal for learning Spanish?",
+      subtitle: 'Q1_PLACEHOLDER',
       options: [
-        { id: 'personal', text: '**Personal 1-to-1 attention**', icon: '👨‍🏫' },
-        { id: 'budget', text: '**Budget / social learning**', icon: '👥' },
-        { id: 'selfpaced', text: '**Learn at my own pace**', icon: '📱' },
-        { id: 'family', text: '**My child / family needs Spanish**', icon: '👨‍👩‍👧‍👦' }
+        { id: 'personal', text: 'Personal 1-to-1 attention', icon: '👨‍🏫' },
+        { id: 'budget', text: 'Budget / social learning', icon: '👥' },
+        { id: 'selfpaced', text: 'Learn at my own pace', icon: '📱' },
+        { id: 'family', text: 'My child / family needs Spanish', icon: '👨‍👩‍👧‍👦' }
       ]
     },
     {
       id: 'q2',
-      title: '**How do you prefer to learn?**',
-      subtitle: '**Q2_PLACEHOLDER**',
+      title: 'How do you prefer to learn?',
+      subtitle: 'Q2_PLACEHOLDER',
       options: [
-        { id: 'flexible', text: '**Flexible schedule**', icon: '⏰' },
-        { id: 'structured', text: '**Structured classes**', icon: '📚' },
-        { id: 'interactive', text: '**Interactive exercises**', icon: '🎮' },
-        { id: 'conversation', text: '**Conversation practice**', icon: '💬' }
+        { id: 'flexible', text: 'Flexible schedule', icon: '⏰' },
+        { id: 'structured', text: 'Structured classes', icon: '📚' },
+        { id: 'interactive', text: 'Interactive exercises', icon: '🎮' },
+        { id: 'conversation', text: 'Conversation practice', icon: '💬' }
       ]
     },
     {
       id: 'q3',
-      title: '**What\'s your current Spanish level?**',
-      subtitle: '**Q3_PLACEHOLDER**',
+      title: "What's your current Spanish level?",
+      subtitle: 'Q3_PLACEHOLDER',
       options: [
-        { id: 'beginner', text: '**Complete beginner**', icon: '🌱' },
-        { id: 'basic', text: '**Basic (some words/phrases)**', icon: '📖' },
-        { id: 'intermediate', text: '**Intermediate (simple conversations)**', icon: '💭' },
-        { id: 'advanced', text: '**Advanced (complex topics)**', icon: '🎓' }
+        { id: 'beginner', text: 'Complete beginner', icon: '🌱' },
+        { id: 'basic', text: 'Basic (some words/phrases)', icon: '📖' },
+        { id: 'intermediate', text: 'Intermediate (simple conversations)', icon: '💭' },
+        { id: 'advanced', text: 'Advanced (complex topics)', icon: '🎓' }
       ]
     },
     {
       id: 'q4',
-      title: '**How much time can you dedicate per week?**',
-      subtitle: '**Q4_PLACEHOLDER**',
+      title: 'How much time can you dedicate per week?',
+      subtitle: 'Q4_PLACEHOLDER',
       options: [
-        { id: 'light', text: '**1-2 hours (light commitment)**', icon: '⏱️' },
-        { id: 'moderate', text: '**3-5 hours (moderate pace)**', icon: '📅' },
-        { id: 'intensive', text: '**6+ hours (intensive learning)**', icon: '🚀' },
-        { id: 'flexible', text: '**Flexible based on my schedule**', icon: '🔄' }
+        { id: 'light', text: '1-2 hours (light commitment)', icon: '⏱️' },
+        { id: 'moderate', text: '3-5 hours (moderate pace)', icon: '📅' },
+        { id: 'intensive', text: '6+ hours (intensive learning)', icon: '🚀' },
+        { id: 'flexible', text: 'Flexible based on my schedule', icon: '🔄' }
       ]
     }
   ];
@@ -77,32 +77,32 @@ const SpanishLearningFunnel: React.FC = () => {
     console.log('Calculating recommendation with answers:', answers);
 
     // Rule: Personal attention OR flexible schedule → Private Classes
-    if (answers.q1 === '**Personal 1-to-1 attention**' || 
-        answers.q2 === '**Flexible schedule**') {
+    if (answers.q1 === 'Personal 1-to-1 attention' || 
+        answers.q2 === 'Flexible schedule') {
       return PLANS.PRIVATE;
     }
     
     // Rule: Budget/social learning → Group Classes
-    if (answers.q1 === '**Budget / social learning**') {
+    if (answers.q1 === 'Budget / social learning') {
       return PLANS.GROUP;
     }
     
     // Rule: Self-paced learning → Academy
-    if (answers.q1 === '**Learn at my own pace**') {
+    if (answers.q1 === 'Learn at my own pace') {
       return PLANS.ACADEMY;
     }
     
     // Rule: Family learning → Family Classes
-    if (answers.q1 === '**My child / family needs Spanish**') {
+    if (answers.q1 === 'My child / family needs Spanish') {
       return PLANS.FAMILY;
     }
     
     // Default fallback based on other preferences
-    if (answers.q2 === '**Interactive exercises**') {
+    if (answers.q2 === 'Interactive exercises') {
       return PLANS.ACADEMY;
     }
     
-    if (answers.q2 === '**Conversation practice**') {
+    if (answers.q2 === 'Conversation practice') {
       return PLANS.GROUP;
     }
     
@@ -121,6 +121,13 @@ const SpanishLearningFunnel: React.FC = () => {
       ...prev,
       answers: newAnswers,
       currentStep: prev.currentStep + 1
+    }));
+  };
+
+  const handleGoBack = () => {
+    setState(prev => ({
+      ...prev,
+      currentStep: Math.max(1, prev.currentStep - 1)
     }));
   };
 
@@ -157,6 +164,7 @@ const SpanishLearningFunnel: React.FC = () => {
         currentStep={state.currentStep}
         totalSteps={totalSteps}
         onAnswer={handleAnswer}
+        onGoBack={handleGoBack}
       />
     );
   }
@@ -168,6 +176,7 @@ const SpanishLearningFunnel: React.FC = () => {
         currentStep={state.currentStep}
         totalSteps={totalSteps}
         onSubmit={handleLeadCapture}
+        onGoBack={handleGoBack}
       />
     );
   }

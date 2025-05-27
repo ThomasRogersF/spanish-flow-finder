@@ -22,7 +22,7 @@ const RecommendationLanding: React.FC<RecommendationLandingProps> = ({ state, on
       };
 
       try {
-        await fetch('https://hooks.zapier.com/hooks/catch/xxxx/xxxx', {
+        await fetch('https://hook.us2.make.com/i6e9jo06c59bi7s5vfkt371l4uxtohsr', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

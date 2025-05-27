@@ -11,7 +11,7 @@ const AdminDashboard: React.FC = () => {
     results: false
   });
 
-  const [webhookUrl, setWebhookUrl] = useState('https://hooks.zapier.com/hooks/catch/xxxx/xxxx');
+  const [webhookUrl, setWebhookUrl] = useState('https://hook.us2.make.com/i6e9jo06c59bi7s5vfkt371l4uxtohsr');
   const [isEditingWebhook, setIsEditingWebhook] = useState(false);
 
   // Mock data for demonstration

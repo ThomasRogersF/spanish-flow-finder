@@ -183,18 +183,24 @@ const RecommendationLanding: React.FC<RecommendationLandingProps> = ({ state, on
 
   // Helper function to get benefit text
   const getBenefitText = () => {
-    if (state.userPath === 'adult' && content.plan) {
+    if (state.userPath === 'adult' && 'plan' in content) {
       return content.plan.benefit;
     }
-    return content.benefit;
+    if ('benefit' in content) {
+      return content.benefit;
+    }
+    return '';
   };
 
   // Helper function to get included items
   const getIncludedItems = () => {
-    if (state.userPath === 'adult' && content.plan) {
+    if (state.userPath === 'adult' && 'plan' in content) {
       return content.plan.included;
     }
-    return content.included;
+    if ('included' in content) {
+      return content.included;
+    }
+    return [];
   };
 
   return (

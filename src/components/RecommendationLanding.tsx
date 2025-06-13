@@ -181,6 +181,22 @@ const RecommendationLanding: React.FC<RecommendationLandingProps> = ({ state, on
 
   const content = getContent();
 
+  // Helper function to get benefit text
+  const getBenefitText = () => {
+    if (state.userPath === 'adult' && content.plan) {
+      return content.plan.benefit;
+    }
+    return content.benefit;
+  };
+
+  // Helper function to get included items
+  const getIncludedItems = () => {
+    if (state.userPath === 'adult' && content.plan) {
+      return content.plan.included;
+    }
+    return content.included;
+  };
+
   return (
     <div className="min-h-screen bg-spanish-cream">
       {/* Logo */}
@@ -209,7 +225,7 @@ const RecommendationLanding: React.FC<RecommendationLandingProps> = ({ state, on
               {content.headline}
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              {content.benefit || (content as any).plan?.benefit}
+              {getBenefitText()}
             </p>
             <button onClick={onStartTrial} className="btn-primary text-xl">
               {content.cta}
@@ -256,7 +272,7 @@ const RecommendationLanding: React.FC<RecommendationLandingProps> = ({ state, on
             </h2>
             <div className="bg-white rounded-2xl p-8 card-shadow">
               <ul className="space-y-6">
-                {content.included?.map((feature, index) => (
+                {getIncludedItems()?.map((feature, index) => (
                   <li key={index} className="flex items-start space-x-4">
                     <span className="text-spanish-teal font-bold text-xl">✓</span>
                     <span className="text-gray-700 text-lg">{feature}</span>

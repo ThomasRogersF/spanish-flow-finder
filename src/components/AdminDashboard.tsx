@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, Edit2, Save, X } from 'lucide-react';
 import { Question, PLANS } from '../types/questionnaire';
@@ -18,13 +17,13 @@ const AdminDashboard: React.FC = () => {
   const questions: Question[] = [
     {
       id: 'q1',
-      title: "What's your main goal for learning Spanish?",
-      subtitle: 'Q1_PLACEHOLDER',
+      title: "Great! Who are the Spanish learners?",
+      subtitle: 'This helps us direct you to the right place.',
       options: [
-        { id: 'personal', text: 'Personal 1-to-1 attention', icon: '👨‍🏫' },
-        { id: 'budget', text: 'Budget / social learning', icon: '👥' },
-        { id: 'selfpaced', text: 'Learn at my own pace', icon: '📱' },
-        { id: 'family', text: 'My child / family needs Spanish', icon: '👨‍👩‍👧‍👦' }
+        { id: 'adult', text: 'For myself (or another adult)', icon: '👩‍🎓' },
+        { id: 'child', text: 'For my child', icon: '👶' },
+        { id: 'family', text: 'For my family', icon: '👨‍👩‍👧‍👦' },
+        { id: 'company', text: 'For my company or team', icon: '🏢' }
       ]
     },
     {
@@ -42,20 +41,28 @@ const AdminDashboard: React.FC = () => {
 
   const logicRules = [
     {
-      condition: 'q1 = "Personal 1-to-1 attention" OR q2 = "Flexible schedule"',
+      condition: 'q4a = "A personal coach who adapts to my pace and learning style."',
       result: PLANS.PRIVATE
     },
     {
-      condition: 'q1 = "Budget / social learning"',
+      condition: 'q4a = "A supportive classroom where I can practice with other students."',
       result: PLANS.GROUP
     },
     {
-      condition: 'q1 = "Learn at my own pace"',
-      result: PLANS.ACADEMY
+      condition: 'q4a = "A combination of private coaching and group conversation practice."',
+      result: PLANS.FLUENT_BUNDLE
     },
     {
-      condition: 'q1 = "My child / family needs Spanish"',
+      condition: 'q1 = "For my child"',
+      result: PLANS.KIDS
+    },
+    {
+      condition: 'q1 = "For my family"',
       result: PLANS.FAMILY
+    },
+    {
+      condition: 'q1 = "For my company or team"',
+      result: PLANS.BUSINESS
     }
   ];
 
@@ -65,7 +72,7 @@ const AdminDashboard: React.FC = () => {
       timestamp: '2024-01-15 10:30:00',
       name: 'John Doe',
       email: 'john@example.com',
-      answers: { q1: 'Personal 1-to-1 attention', q2: 'Flexible schedule' },
+      answers: { q1: 'For myself (or another adult)', q4a: 'A personal coach who adapts to my pace and learning style.' },
       recommendation: PLANS.PRIVATE
     },
     {
@@ -73,7 +80,7 @@ const AdminDashboard: React.FC = () => {
       timestamp: '2024-01-15 09:15:00',
       name: 'Jane Smith',
       email: 'jane@example.com',
-      answers: { q1: 'Budget / social learning', q2: 'Structured classes' },
+      answers: { q1: 'For myself (or another adult)', q4a: 'A supportive classroom where I can practice with other students.' },
       recommendation: PLANS.GROUP
     }
   ];

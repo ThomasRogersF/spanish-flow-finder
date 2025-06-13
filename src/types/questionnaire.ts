@@ -27,6 +27,7 @@ export const PLANS = {
   PRIVATE: 'Private Tutoring Program',
   GROUP: 'Unlimited Group Classes', 
   FLUENT_BUNDLE: 'Fluent Bundle',
-  ACADEMY: 'Academy',
-  FAMILY: 'Family Classes'
+  KIDS: 'Spanish for Kids Program',
+  FAMILY: 'Family Classes',
+  BUSINESS: 'Corporate Spanish Training'
 } as const;

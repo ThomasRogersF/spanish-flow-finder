@@ -74,6 +74,66 @@ const SpanishLearningFunnel: React.FC = () => {
     }
   ];
 
+  // Parent path questions
+  const parentQuestions: Question[] = [
+    {
+      id: 'q2b',
+      title: "How old is your child?",
+      subtitle: 'We have specialized programs designed for every age group.',
+      options: [
+        { id: '3-6', text: '3-6 (Little Explorer)', icon: '🌟' },
+        { id: '7-12', text: '7-12 (Young Adventurer)', icon: '🎒' },
+        { id: '13-17', text: '13-17 (Teen Voyager)', icon: '🚀' }
+      ]
+    },
+    {
+      id: 'q3b',
+      title: "And which of these best describes your child?",
+      subtitle: 'This helps us understand your child\'s learning personality so we can ensure they have fun!',
+      options: [
+        { id: 'shy', text: 'A bit shy and would thrive with one-on-one encouragement.', icon: '🤗' },
+        { id: 'social', text: 'Social and energetic – loves learning with others!', icon: '🎉' },
+        { id: 'creative', text: 'Creative and loves fun, interactive activities and games.', icon: '🎨' }
+      ]
+    }
+  ];
+
+  // Family path questions
+  const familyQuestions: Question[] = [
+    {
+      id: 'q2c',
+      title: "Who in the family will be learning together? (Select all that apply)",
+      subtitle: 'Let us know who will be in the class so we can prepare the fun!',
+      options: [
+        { id: 'parents', text: 'Parent(s) / Guardian(s)', icon: '👨‍👩' },
+        { id: 'young-kids', text: 'Young kids (ages 4-11)', icon: '🧒' },
+        { id: 'teens', text: 'Teens (ages 12-17)', icon: '👦' },
+        { id: 'grandparents', text: 'Grandparents', icon: '👴' }
+      ]
+    },
+    {
+      id: 'q3c',
+      title: "What's your family's main goal for learning Spanish together?",
+      subtitle: 'This helps us design activities that everyone in the family will enjoy.',
+      options: [
+        { id: 'trip', text: 'To prepare for an upcoming family trip.', icon: '🏖️' },
+        { id: 'heritage', text: 'To connect with our family heritage.', icon: '🏠' },
+        { id: 'activity', text: 'To find a fun, new educational activity to do together.', icon: '📚' },
+        { id: 'support', text: 'To support our children\'s Spanish studies in school.', icon: '🎓' }
+      ]
+    },
+    {
+      id: 'q4c',
+      title: "What's the general Spanish level of the family members who will be participating?",
+      subtitle: 'It\'s okay if levels are different! This helps us create a plan that works for everyone.',
+      options: [
+        { id: 'all-beginners', text: 'We\'re all complete beginners.', icon: '🌱' },
+        { id: 'mixed-basic', text: 'There\'s a mix of beginners and some with a little experience.', icon: '📊' },
+        { id: 'wide-range', text: 'We have a wide range of different levels in the group.', icon: '📈' }
+      ]
+    }
+  ];
+
   const getCurrentQuestions = (): Question[] => {
     if (state.currentStep === 1) {
       return [initialQuestion];
@@ -84,10 +144,11 @@ const SpanishLearningFunnel: React.FC = () => {
       case 'adult':
         return adultQuestions;
       case 'child':
+        return parentQuestions;
       case 'family':
+        return familyQuestions;
       case 'company':
-        // For now, return adult questions as placeholder until other paths are implemented
-        return adultQuestions;
+        return []; // Business goes directly to results
       default:
         return [];
     }
@@ -96,9 +157,18 @@ const SpanishLearningFunnel: React.FC = () => {
   const getTotalSteps = (): number => {
     const baseSteps = 2; // lead capture + results
     if (state.userPath === 'adult') {
-      return 1 + adultQuestions.length + baseSteps; // initial + adult questions + base
+      return 1 + adultQuestions.length + baseSteps;
     }
-    return 1 + 3 + baseSteps; // initial + 3 questions + base (placeholder for other paths)
+    if (state.userPath === 'child') {
+      return 1 + parentQuestions.length + baseSteps;
+    }
+    if (state.userPath === 'family') {
+      return 1 + familyQuestions.length + baseSteps;
+    }
+    if (state.userPath === 'company') {
+      return 1 + baseSteps; // Just initial question + lead capture + results
+    }
+    return 4 + baseSteps; // Default fallback
   };
 
   // Conditional logic for plan recommendation
@@ -120,6 +190,21 @@ const SpanishLearningFunnel: React.FC = () => {
       if (learningStyle === 'A combination of private coaching and group conversation practice.') {
         return PLANS.FLUENT_BUNDLE;
       }
+    }
+
+    // Parent path recommendations
+    if (state.userPath === 'child') {
+      return PLANS.KIDS;
+    }
+
+    // Family path recommendations
+    if (state.userPath === 'family') {
+      return PLANS.FAMILY;
+    }
+
+    // Business path recommendations
+    if (state.userPath === 'company') {
+      return PLANS.BUSINESS;
     }
     
     // Default fallback
@@ -203,7 +288,23 @@ const SpanishLearningFunnel: React.FC = () => {
   }
 
   // Question screens
-  const questionsLength = state.userPath === 'adult' ? 1 + adultQuestions.length : 4;
+  const getQuestionsLength = () => {
+    switch (state.userPath) {
+      case 'adult':
+        return 1 + adultQuestions.length;
+      case 'child':
+        return 1 + parentQuestions.length;
+      case 'family':
+        return 1 + familyQuestions.length;
+      case 'company':
+        return 1; // Just the initial question
+      default:
+        return 4;
+    }
+  };
+
+  const questionsLength = getQuestionsLength();
+  
   if (state.currentStep <= questionsLength) {
     const questionIndex = state.currentStep === 1 ? 0 : state.currentStep - 2;
     const currentQuestion = currentQuestions[questionIndex];

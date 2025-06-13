@@ -18,6 +18,7 @@ const RecommendationLanding: React.FC<RecommendationLandingProps> = ({ state, on
         recommendedPlan: state.recommendedPlan,
         answers: state.answers,
         userData: state.userData,
+        userPath: state.userPath,
         source: 'spanish-learning-funnel'
       };
 
@@ -40,54 +41,72 @@ const RecommendationLanding: React.FC<RecommendationLandingProps> = ({ state, on
     setTimeout(() => setShowDetails(true), 500);
   }, [state]);
 
+  const getUserGoal = () => {
+    const goalAnswers = {
+      'To travel with confidence and immerse myself in new cultures.': 'traveling with confidence',
+      'For career advancement and to open professional doors.': 'career advancement',
+      'To connect more deeply with my family, partner, or friends.': 'connecting with loved ones',
+      'For the joy of learning and to keep my mind sharp.': 'personal growth and learning'
+    };
+    return goalAnswers[state.answers.q2a as keyof typeof goalAnswers] || 'achieving your Spanish goals';
+  };
+
   const planDetails = {
-    'Private Classes': {
+    'Private Tutoring Program': {
       icon: '👨‍🏫',
-      benefit: 'Get personalized 1-on-1 attention with flexible scheduling that fits your life',
+      benefit: 'Based on your preference for one-on-one focus, our Private Tutoring Program is the perfect fit.',
+      description: 'Get personalized 1-on-1 attention with flexible scheduling that fits your life',
       why: [
         'You value personalized attention and feedback',
         'You need a flexible schedule that works with your busy life',
         'You want to progress at your own pace'
       ],
       howItWorks: 'Weekly 60-minute sessions with certified native Spanish teachers via video call',
-      included: ['Unlimited lesson scheduling', 'Personal progress tracking', 'Custom learning materials', 'Homework assignments']
+      included: [
+        'A Personalized Learning Plan: A custom plan designed by a native-speaking teacher to help you achieve your goal of ' + getUserGoal(),
+        'Your First Class Free: A free 25-minute private class to experience our method firsthand',
+        'Proven Curriculum: Access to our learning materials and curriculum trusted by thousands of students'
+      ]
     },
-    'Group Classes': {
+    'Unlimited Group Classes': {
       icon: '👥',
-      benefit: 'Learn Spanish in a fun, social environment while keeping costs affordable',
+      benefit: 'You\'ll love our community! Based on your preferences, our unlimited Group Classes are the perfect fit.',
+      description: 'Learn Spanish in a fun, social environment while keeping costs affordable',
       why: [
         'You enjoy learning with others and staying motivated',
         'You want an affordable option without sacrificing quality',
         'You thrive in group discussions and activities'
       ],
       howItWorks: 'Small group classes (max 6 students) with structured curriculum and regular practice',
-      included: ['Unlimited group classes', 'Weekly conversation practice', 'Community access', 'Digital workbook']
+      included: [
+        'A Personalized Learning Plan: A custom plan designed by a native-speaking teacher to help you achieve your goal of ' + getUserGoal(),
+        'Your First Class Free: A 7-day trial of unlimited group classes to experience our method firsthand',
+        'Proven Curriculum: Access to our learning materials and curriculum trusted by thousands of students'
+      ]
     },
-    'Academy': {
-      icon: '📱',
-      benefit: 'Master Spanish at your own pace with our comprehensive self-study platform',
+    'Fluent Bundle': {
+      icon: '🔄',
+      benefit: 'Get the best of both worlds! Our Fluent Bundle combines private lessons with unlimited group classes to accelerate your journey.',
+      description: 'The perfect combination of personalized coaching and group practice',
       why: [
-        'You prefer learning at your own pace and schedule',
-        'You want access to comprehensive learning materials',
-        'You\'re self-motivated and disciplined'
+        'You want the best of both private and group learning',
+        'You value personalized attention AND community practice',
+        'You\'re serious about achieving fluency quickly'
       ],
-      howItWorks: 'Interactive lessons, quizzes, and practice exercises available 24/7 on any device',
-      included: ['500+ interactive lessons', 'Progress tracking', 'Mobile & web access', 'Certificate of completion']
-    },
-    'Family Classes': {
-      icon: '👨‍👩‍👧‍👦',
-      benefit: 'Learn Spanish together as a family with age-appropriate content for everyone',
-      why: [
-        'You want to learn Spanish with your children',
-        'You believe in family learning experiences',
-        'You want age-appropriate content for different levels'
-      ],
-      howItWorks: 'Family-friendly lessons designed for parents and children to learn together',
-      included: ['Age-appropriate content', 'Family activity guides', 'Progress tracking for each member', 'Flexible scheduling']
+      howItWorks: 'Combine private lessons for personalized instruction with unlimited group classes for practice',
+      included: [
+        'A Personalized Learning Plan: A custom plan designed by a native-speaking teacher to help you achieve your goal of ' + getUserGoal(),
+        'Your First Class Free: A free 25-minute private class AND 7-day trial of unlimited group classes',
+        'Proven Curriculum: Access to our complete learning system trusted by thousands of students'
+      ]
     }
   };
 
   const currentPlan = planDetails[state.recommendedPlan as keyof typeof planDetails];
+
+  if (!currentPlan) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="min-h-screen bg-spanish-cream">
@@ -114,93 +133,78 @@ const RecommendationLanding: React.FC<RecommendationLandingProps> = ({ state, on
             </div>
 
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              🎉 You're a perfect fit for {state.recommendedPlan}!
+              Okay, you're ready to learn Spanish for {getUserGoal()}! Here is your personalized plan.
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
               {currentPlan?.benefit}
             </p>
             <button onClick={onStartTrial} className="btn-primary text-xl">
-              Start My {state.recommendedPlan} Trial →
+              Start My Free Trial Now →
             </button>
           </div>
         </div>
       </div>
 
-      {/* Details Section */}
+      {/* Social Proof Strip */}
+      <div className="py-8 bg-white">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+            <div>
+              <div className="text-2xl font-bold text-spanish-orange">10,000+</div>
+              <div className="text-sm text-gray-600">students now speaking Spanish with confidence</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-spanish-teal">🔥 152</div>
+              <div className="text-sm text-gray-600">people started a free trial this week</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-red-500">⏰ 10:00</div>
+              <div className="text-sm text-gray-600">Your special offer expires in minutes</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Your Plan Includes */}
       {showDetails && (
         <div className="py-12 animate-fade-in">
-          <div className="max-w-6xl mx-auto px-4">
-            <div className="grid md:grid-cols-3 gap-8">
-              {/* Why We Chose This */}
-              <div className="bg-white rounded-2xl p-8 card-shadow">
-                <div className="text-center mb-6">
-                  <div className="text-4xl mb-4">{currentPlan?.icon}</div>
-                  <h3 className="text-2xl font-bold text-gray-900">Why we chose this for you</h3>
-                </div>
-                <ul className="space-y-3">
-                  {currentPlan?.why.map((reason, index) => (
-                    <li key={index} className="flex items-start space-x-3">
-                      <span className="text-spanish-orange font-bold">✓</span>
-                      <span className="text-gray-700">{reason}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* How It Works */}
-              <div className="bg-white rounded-2xl p-8 card-shadow">
-                <div className="text-center mb-6">
-                  <div className="text-4xl mb-4">⚡</div>
-                  <h3 className="text-2xl font-bold text-gray-900">How it works</h3>
-                </div>
-                <p className="text-gray-700 leading-relaxed">
-                  {currentPlan?.howItWorks}
-                </p>
-              </div>
-
-              {/* What's Included */}
-              <div className="bg-white rounded-2xl p-8 card-shadow">
-                <div className="text-center mb-6">
-                  <div className="text-4xl mb-4">🎁</div>
-                  <h3 className="text-2xl font-bold text-gray-900">What's included</h3>
-                </div>
-                <ul className="space-y-3">
-                  {currentPlan?.included.map((feature, index) => (
-                    <li key={index} className="flex items-start space-x-3">
-                      <span className="text-spanish-teal font-bold">✓</span>
-                      <span className="text-gray-700">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+          <div className="max-w-4xl mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">Your Plan Includes:</h2>
+            <div className="bg-white rounded-2xl p-8 card-shadow">
+              <ul className="space-y-6">
+                {currentPlan?.included.map((feature, index) => (
+                  <li key={index} className="flex items-start space-x-4">
+                    <span className="text-spanish-teal font-bold text-xl">✓</span>
+                    <span className="text-gray-700 text-lg">{feature}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
       )}
 
-      {/* Social Proof Strip */}
-      <div className="py-12 bg-white">
+      {/* Guarantee Section */}
+      <div className="py-12 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h3 className="text-2xl font-bold text-gray-900 mb-8">Trusted by thousands of Spanish learners</h3>
-          <div className="flex justify-center items-center space-x-8 opacity-60">
-            <div className="text-lg font-semibold">⭐⭐⭐⭐⭐ 4.9/5</div>
-            <div className="text-gray-500">|</div>
-            <div className="text-lg font-semibold">50,000+ Students</div>
-            <div className="text-gray-500">|</div>
-            <div className="text-lg font-semibold">15+ Countries</div>
-          </div>
+          <h3 className="text-2xl font-bold text-gray-900 mb-4">The SpanishVIP "Perfect Match" Guarantee</h3>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            We are confident we can find the right teacher for you. If you aren't 100% satisfied with your trial class, 
+            we will find you a new teacher or refund your session. Your progress is our mission.
+          </p>
         </div>
       </div>
 
       {/* Final CTA */}
       <div className="py-12 text-center">
         <div className="max-w-2xl mx-auto px-4">
-          <h3 className="text-3xl font-bold text-gray-900 mb-4">Ready to start your Spanish journey?</h3>
-          <p className="text-lg text-gray-600 mb-8">Join thousands of successful students and start speaking Spanish with confidence</p>
-          <button onClick={onStartTrial} className="btn-primary text-xl">
-            Start My Free Trial Today →
+          <button onClick={onStartTrial} className="btn-primary text-xl mb-4">
+            Start My Free Trial Now →
           </button>
-          <p className="text-sm text-gray-500 mt-4">✓ No credit card required ✓ Cancel anytime ✓ 7-day free trial</p>
+          <p className="text-sm text-gray-500">
+            After your 7-day trial, your plan renews at $XX/month. Cancel anytime, hassle-free, from your account settings. 
+            <a href="#" className="text-spanish-orange hover:underline ml-1">See Subscription Terms.</a>
+          </p>
         </div>
       </div>
     </div>

@@ -9,6 +9,7 @@ export interface QuestionnaireState {
     agreedToTerms: boolean;
   };
   recommendedPlan: string;
+  userPath: 'adult' | 'child' | 'family' | 'company' | '';
 }
 
 export interface Question {
@@ -23,8 +24,9 @@ export interface Question {
 }
 
 export const PLANS = {
-  PRIVATE: 'Private Classes',
-  GROUP: 'Group Classes', 
+  PRIVATE: 'Private Tutoring Program',
+  GROUP: 'Unlimited Group Classes', 
+  FLUENT_BUNDLE: 'Fluent Bundle',
   ACADEMY: 'Academy',
   FAMILY: 'Family Classes'
 } as const;

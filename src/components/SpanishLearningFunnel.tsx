@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { QuestionnaireState, Question, PLANS } from '../types/questionnaire';
 import WelcomeScreen from './WelcomeScreen';
@@ -267,7 +266,7 @@ const SpanishLearningFunnel: React.FC = () => {
     };
 
     try {
-      await fetch('https://hook.us2.make.com/i6e9jo06c59bi7s5vfkt371l4uxtohsr', {
+      await fetch('https://hook.us2.make.com/mvt34ak8l82zej965ykcsayb9fk34gs6', { // updated here!
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

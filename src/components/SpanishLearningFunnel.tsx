@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { QuestionnaireState, Question, PLANS } from '../types/questionnaire';
 import WelcomeScreen from './WelcomeScreen';
@@ -215,15 +214,16 @@ const SpanishLearningFunnel: React.FC = () => {
     setState(prev => ({ ...prev, currentStep: 1 }));
   };
 
-  const handleAnswer = (questionId: string, answer: string) => {
-    const newAnswers = { ...state.answers, [questionId]: answer };
+  const handleAnswer = (questionId: string, answer: string | string[]) => {
+    const answerValue = Array.isArray(answer) ? answer.join(', ') : answer;
+    const newAnswers = { ...state.answers, [questionId]: answerValue };
     
     // Handle initial segmentation
     if (questionId === 'q1') {
-      const userPath = answer === 'For myself (or another adult)' ? 'adult' :
-                      answer === 'For my child' ? 'child' :
-                      answer === 'For my family' ? 'family' :
-                      answer === 'For my company or team' ? 'company' : '';
+      const userPath = answerValue === 'For myself (or another adult)' ? 'adult' :
+                      answerValue === 'For my child' ? 'child' :
+                      answerValue === 'For my family' ? 'family' :
+                      answerValue === 'For my company or team' ? 'company' : '';
       
       setState(prev => ({
         ...prev,

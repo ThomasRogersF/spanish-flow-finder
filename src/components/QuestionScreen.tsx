@@ -1,14 +1,15 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { ChevronLeft } from 'lucide-react';
 import { Question } from '../types/questionnaire';
 import ProgressBar from './ProgressBar';
+import { Checkbox } from './ui/checkbox';
 
 interface QuestionScreenProps {
   question: Question;
   currentStep: number;
   totalSteps: number;
-  onAnswer: (questionId: string, answer: string) => void;
+  onAnswer: (questionId: string, answer: string | string[]) => void;
   onGoBack: () => void;
 }
 
@@ -19,8 +20,27 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
   onAnswer,
   onGoBack
 }) => {
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const isMultiSelect = question.id === 'q2c'; // Family question for multiple selection
+
   const handleOptionClick = (optionId: string, optionText: string) => {
-    onAnswer(question.id, optionText);
+    if (!isMultiSelect) {
+      onAnswer(question.id, optionText);
+      return;
+    }
+
+    // Handle multiple selection for family question
+    const newSelected = selectedOptions.includes(optionText)
+      ? selectedOptions.filter(item => item !== optionText)
+      : [...selectedOptions, optionText];
+    
+    setSelectedOptions(newSelected);
+  };
+
+  const handleContinue = () => {
+    if (isMultiSelect && selectedOptions.length > 0) {
+      onAnswer(question.id, selectedOptions);
+    }
   };
 
   return (
@@ -61,22 +81,50 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
           
           <div className="space-y-4">
             {question.options.map((option) => (
-              <button
+              <div
                 key={option.id}
-                onClick={() => handleOptionClick(option.id, option.text)}
-                className="w-full bg-white rounded-2xl p-6 card-shadow hover:shadow-xl hover:scale-[1.02] transition-all duration-200 text-left group"
+                className={`w-full bg-white rounded-2xl p-6 card-shadow hover:shadow-xl hover:scale-[1.02] transition-all duration-200 ${
+                  isMultiSelect ? 'cursor-pointer' : ''
+                }`}
+                onClick={isMultiSelect ? () => handleOptionClick(option.id, option.text) : undefined}
               >
                 <div className="flex items-center space-x-4">
+                  {isMultiSelect && (
+                    <Checkbox
+                      checked={selectedOptions.includes(option.text)}
+                      onChange={() => handleOptionClick(option.id, option.text)}
+                    />
+                  )}
                   {option.icon && (
                     <span className="text-2xl">{option.icon}</span>
                   )}
-                  <span className="text-lg font-medium text-gray-900 group-hover:text-spanish-orange transition-colors">
-                    {option.text}
-                  </span>
+                  {isMultiSelect ? (
+                    <span className="text-lg font-medium text-gray-900">
+                      {option.text}
+                    </span>
+                  ) : (
+                    <button
+                      onClick={() => handleOptionClick(option.id, option.text)}
+                      className="text-lg font-medium text-gray-900 group-hover:text-spanish-orange transition-colors text-left w-full"
+                    >
+                      {option.text}
+                    </button>
+                  )}
                 </div>
-              </button>
+              </div>
             ))}
           </div>
+
+          {isMultiSelect && selectedOptions.length > 0 && (
+            <div className="mt-8 text-center">
+              <button
+                onClick={handleContinue}
+                className="bg-spanish-orange text-white px-8 py-3 rounded-xl font-semibold hover:bg-opacity-90 transition-all duration-200"
+              >
+                Continue
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

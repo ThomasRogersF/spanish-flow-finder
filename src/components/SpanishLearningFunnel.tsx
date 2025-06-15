@@ -81,9 +81,9 @@ const SpanishLearningFunnel: React.FC = () => {
       title: "How old is your child?",
       subtitle: 'We have specialized programs designed for every age group.',
       options: [
-        { id: '3-6', text: '3-6 (Little Explorer)', icon: '🌟' },
-        { id: '7-12', text: '7-12 (Young Adventurer)', icon: '🎒' },
-        { id: '13-17', text: '13-17 (Teen Voyager)', icon: '🚀' }
+        { id: '3-6', text: '3-6 years old', icon: '🌟' },
+        { id: '7-12', text: '7-12 years old', icon: '🎒' },
+        { id: '13-17', text: '13-17 years old', icon: '🚀' }
       ]
     },
     {

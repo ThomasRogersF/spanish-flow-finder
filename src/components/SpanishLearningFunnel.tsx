@@ -1,10 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import { QuestionnaireState, Question, PLANS } from '../types/questionnaire';
 import WelcomeScreen from './WelcomeScreen';
 import QuestionScreen from './QuestionScreen';
 import LeadCaptureScreen from './LeadCaptureScreen';
 import LoadingScreen from './LoadingScreen';
-import RecommendationLanding from './RecommendationLanding';
 import SuccessModal from './SuccessModal';
 
 const SpanishLearningFunnel: React.FC = () => {
@@ -154,7 +154,7 @@ const SpanishLearningFunnel: React.FC = () => {
   };
 
   const getTotalSteps = (): number => {
-    const baseSteps = 2; // lead capture + results
+    const baseSteps = 1; // just lead capture (no results page)
     if (state.userPath === 'adult') {
       return 1 + adultQuestions.length + baseSteps;
     }
@@ -165,49 +165,49 @@ const SpanishLearningFunnel: React.FC = () => {
       return 1 + familyQuestions.length + baseSteps;
     }
     if (state.userPath === 'company') {
-      return 1 + baseSteps; // Just initial question + lead capture + results
+      return 1 + baseSteps; // Just initial question + lead capture
     }
     return 4 + baseSteps; // Default fallback
   };
 
-  // Conditional logic for plan recommendation
-  const calculateRecommendation = (answers: Record<string, string>): string => {
-    console.log('Calculating recommendation with answers:', answers);
+  // Function to get redirect URL based on user path and answers
+  const getRedirectUrl = (): string => {
+    console.log('Getting redirect URL for path:', state.userPath, 'with answers:', state.answers);
 
-    // Adult learner path recommendations
+    // Adult learner path redirects
     if (state.userPath === 'adult') {
-      const learningStyle = answers.q4a;
+      const learningStyle = state.answers.q4a;
       
       if (learningStyle === 'A personal coach who adapts to my pace and learning style.') {
-        return PLANS.PRIVATE;
+        return 'https://stagingenv.spanishvip.com/adults-tutoring-lp/';
       }
       
       if (learningStyle === 'A supportive classroom where I can practice with other students.') {
-        return PLANS.GROUP;
+        return 'https://stagingenv.spanishvip.com/group-classes-lp/';
       }
       
       if (learningStyle === 'A combination of private coaching and group conversation practice.') {
-        return PLANS.FLUENT_BUNDLE;
+        return 'https://stagingenv.spanishvip.com/bundle-tutoring-lp/';
       }
     }
 
-    // Parent path recommendations
+    // Parent path redirects
     if (state.userPath === 'child') {
-      return PLANS.KIDS;
+      return 'https://stagingenv.spanishvip.com/kids-tutoring-lp/';
     }
 
-    // Family path recommendations
+    // Family path redirects
     if (state.userPath === 'family') {
-      return PLANS.FAMILY;
+      return 'https://stagingenv.spanishvip.com/family-classes-lp/';
     }
 
-    // Business path recommendations
+    // Business path redirects
     if (state.userPath === 'company') {
-      return PLANS.BUSINESS;
+      return 'https://stagingenv.spanishvip.com/enterprise-demo/';
     }
     
     // Default fallback
-    return PLANS.PRIVATE;
+    return 'https://stagingenv.spanishvip.com/adults-tutoring-lp/';
   };
 
   const handleStart = () => {
@@ -248,30 +248,45 @@ const SpanishLearningFunnel: React.FC = () => {
     }));
   };
 
-  const handleLeadCapture = (userData: QuestionnaireState['userData']) => {
+  const handleLeadCapture = async (userData: QuestionnaireState['userData']) => {
     setIsLoading(true);
     
-    // Simulate analysis time
+    // Update state with user data
+    setState(prev => ({
+      ...prev,
+      userData
+    }));
+
+    // Trigger webhook
+    const webhookData = {
+      timestamp: new Date().toISOString(),
+      userPath: state.userPath,
+      answers: state.answers,
+      userData: userData,
+      source: 'spanish-learning-funnel'
+    };
+
+    try {
+      await fetch('https://hook.us2.make.com/i6e9jo06c59bi7s5vfkt371l4uxtohsr', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        mode: 'no-cors',
+        body: JSON.stringify(webhookData),
+      });
+      console.log('Webhook triggered successfully', webhookData);
+    } catch (error) {
+      console.error('Webhook error:', error);
+    }
+    
+    // Simulate processing time, then redirect
     setTimeout(() => {
-      const recommendedPlan = calculateRecommendation(state.answers);
-      
-      setState(prev => ({
-        ...prev,
-        userData,
-        recommendedPlan,
-        currentStep: prev.currentStep + 1
-      }));
-      
       setIsLoading(false);
-    }, 3000); // 3 seconds loading
-  };
-
-  const handleStartTrial = () => {
-    setShowSuccessModal(true);
-  };
-
-  const handleCloseSuccessModal = () => {
-    setShowSuccessModal(false);
+      const redirectUrl = getRedirectUrl();
+      console.log('Redirecting to:', redirectUrl);
+      window.location.href = redirectUrl;
+    }, 2000); // 2 seconds loading before redirect
   };
 
   const totalSteps = getTotalSteps();
@@ -326,7 +341,7 @@ const SpanishLearningFunnel: React.FC = () => {
     );
   }
 
-  // Lead capture screen
+  // Lead capture screen (final step before redirect)
   if (state.currentStep === questionsLength + 1) {
     return (
       <LeadCaptureScreen
@@ -338,19 +353,8 @@ const SpanishLearningFunnel: React.FC = () => {
     );
   }
 
-  // Recommendation landing page
-  return (
-    <>
-      <RecommendationLanding
-        state={state}
-        onStartTrial={handleStartTrial}
-      />
-      <SuccessModal
-        isOpen={showSuccessModal}
-        onClose={handleCloseSuccessModal}
-      />
-    </>
-  );
+  // This should not be reached anymore since we redirect after lead capture
+  return null;
 };
 
 export default SpanishLearningFunnel;

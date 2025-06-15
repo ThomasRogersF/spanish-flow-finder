@@ -279,12 +279,17 @@ const SpanishLearningFunnel: React.FC = () => {
       console.error('Webhook error:', error);
     }
     
-    // Simulate processing time, then redirect
+    // Wait then notify parent for redirect via postMessage
     setTimeout(() => {
       setIsLoading(false);
       const redirectUrl = getRedirectUrl();
-      console.log('Redirecting to:', redirectUrl);
-      window.location.href = redirectUrl;
+      console.log('PostMessage to parent for redirect:', redirectUrl);
+      window.parent.postMessage(
+        { type: 'QUIZ_COMPLETED', redirectUrl },
+        '*'
+      );
+      // Optionally: you can still use window.location.href as fallback for standalone use
+      // window.location.href = redirectUrl;
     }, 2000); // 2 seconds loading before redirect
   };
 

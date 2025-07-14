@@ -178,35 +178,35 @@ const SpanishLearningFunnel: React.FC = () => {
       const learningStyle = state.answers.q4a;
       
       if (learningStyle === 'A personal coach who adapts to my pace and learning style.') {
-        return 'https://stagingenv.spanishvip.com/adults-tutoring-lp/';
+        return 'https://spanishvip.com/adults-tutoring-lp/';
       }
       
       if (learningStyle === 'A supportive classroom where I can practice with other students.') {
-        return 'https://stagingenv.spanishvip.com/group-classes-lp/';
+        return 'https://spanishvip.com/group-classes-lp/';
       }
       
       if (learningStyle === 'A combination of private coaching and group conversation practice.') {
-        return 'https://stagingenv.spanishvip.com/bundle-tutoring-lp/';
+        return 'https://spanishvip.com/bundle-tutoring-lp/';
       }
     }
 
     // Parent path redirects
     if (state.userPath === 'child') {
-      return 'https://stagingenv.spanishvip.com/kids-tutoring-lp/';
+      return 'https://spanishvip.com/kids-tutoring-lp/';
     }
 
     // Family path redirects
     if (state.userPath === 'family') {
-      return 'https://stagingenv.spanishvip.com/family-classes-lp/';
+      return 'https://spanishvip.com/family-classes-lp/';
     }
 
     // Business path redirects
     if (state.userPath === 'company') {
-      return 'https://stagingenv.spanishvip.com/enterprise-demo/';
+      return 'https://spanishvip.com/enterprise-demo/';
     }
     
     // Default fallback
-    return 'https://stagingenv.spanishvip.com/adults-tutoring-lp/';
+    return 'https://spanishvip.com/adults-tutoring-lp/';
   };
 
   const handleStart = () => {

@@ -22,6 +22,7 @@ const SpanishLearningFunnel: React.FC = () => {
   
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [webhookSent, setWebhookSent] = useState(false);
 
   // Initial segmentation question
   const initialQuestion: Question = {
@@ -248,7 +249,14 @@ const SpanishLearningFunnel: React.FC = () => {
   };
 
   const handleLeadCapture = async (userData: QuestionnaireState['userData']) => {
+    // Prevent multiple webhook calls
+    if (webhookSent) {
+      console.log('Webhook already sent, skipping duplicate call');
+      return;
+    }
+
     setIsLoading(true);
+    setWebhookSent(true);
     
     // Update state with user data
     setState(prev => ({
@@ -277,6 +285,8 @@ const SpanishLearningFunnel: React.FC = () => {
       console.log('Webhook triggered successfully', webhookData);
     } catch (error) {
       console.error('Webhook error:', error);
+      // Reset webhook flag on error to allow retry
+      setWebhookSent(false);
     }
     
     // Wait then notify parent for redirect via postMessage

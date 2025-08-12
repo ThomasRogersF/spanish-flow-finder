@@ -45,7 +45,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart }) => {
 
       <div className="max-w-2xl mx-auto text-center animate-fade-in">
         {/* Logo */}
-        <div className="mb-8">
+        <div className="mt-10 md:mt-12 mb-4">
           <button
             onClick={() => window.parent.postMessage({ action: 'redirect', url: 'https://spanishvip.com/' }, '*')}
             className="inline-block"
@@ -53,7 +53,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart }) => {
             <img 
               src="https://lwfiles.mycourse.app/6409eb5798e53550d7acd5f1-public/1bfa7bb23c37499f0d5908f0a004c50e.png" 
               alt="SpanishVIP Logo"
-              className="h-16 mx-auto mb-6 hover:opacity-80 transition-opacity cursor-pointer"
+              className="h-12 md:h-14 mx-auto mb-0 hover:opacity-80 transition-opacity cursor-pointer"
             />
           </button>
         </div>

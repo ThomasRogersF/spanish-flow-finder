@@ -44,30 +44,26 @@ const LeadCaptureScreen: React.FC<LeadCaptureScreenProps> = ({
   return (
     <div className="min-h-screen bg-spanish-cream flex flex-col items-center justify-center p-4 relative">
       {/* Back to SpanishVIP button */}
-      <a
-        href="https://spanishvip.com/"
-        target="_blank"
-        rel="noopener noreferrer"
+      <button
+        onClick={() => window.parent.postMessage({ action: 'redirect', url: 'https://spanishvip.com/' }, '*')}
         className="absolute top-4 right-4 bg-white text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors shadow-sm border"
       >
         ← Go back to SpanishVIP
-      </a>
+      </button>
 
       <div className="w-full max-w-2xl mx-auto">
         {/* Logo */}
         <div className="text-center mb-6">
-          <a
-            href="https://spanishvip.com/"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={() => window.parent.postMessage({ action: 'redirect', url: 'https://spanishvip.com/' }, '*')}
             className="inline-block"
           >
             <img 
               src="https://lwfiles.mycourse.app/6409eb5798e53550d7acd5f1-public/1bfa7bb23c37499f0d5908f0a004c50e.png" 
               alt="SpanishVIP Logo"
-              className="h-12 mx-auto hover:opacity-80 transition-opacity"
+              className="h-12 mx-auto hover:opacity-80 transition-opacity cursor-pointer"
             />
-          </a>
+          </button>
         </div>
 
         <button

@@ -11,35 +11,8 @@ const RecommendationLanding: React.FC<RecommendationLandingProps> = ({ state, on
   const [showDetails, setShowDetails] = useState(false);
 
   useEffect(() => {
-    // Trigger webhook when recommendation loads
-    const triggerWebhook = async () => {
-      const webhookData = {
-        timestamp: new Date().toISOString(),
-        recommendedPlan: state.recommendedPlan,
-        answers: state.answers,
-        userData: state.userData,
-        userPath: state.userPath,
-        source: 'spanish-learning-funnel'
-      };
-
-      try {
-        await fetch('https://hook.us2.make.com/i6e9jo06c59bi7s5vfkt371l4uxtohsr', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          mode: 'no-cors',
-          body: JSON.stringify(webhookData),
-        });
-        console.log('Webhook triggered successfully', webhookData);
-      } catch (error) {
-        console.error('Webhook error:', error);
-      }
-    };
-
-    triggerWebhook();
     setTimeout(() => setShowDetails(true), 500);
-  }, [state]);
+  }, []);
 
   // Adult learner content
   const getAdultContent = () => {

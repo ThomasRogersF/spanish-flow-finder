@@ -264,13 +264,33 @@ const SpanishLearningFunnel: React.FC = () => {
       userData
     }));
 
-    // Trigger webhook
+    // Determine recommended plan based on user path and answers
+    let recommendedPlan = '';
+    if (state.userPath === 'adult') {
+      const learningStyle = state.answers.q4a;
+      if (learningStyle === 'A personal coach who adapts to my pace and learning style.') {
+        recommendedPlan = 'Private Tutoring Program';
+      } else if (learningStyle === 'A supportive classroom where I can practice with other students.') {
+        recommendedPlan = 'Unlimited Group Classes';
+      } else if (learningStyle === 'A combination of private coaching and group conversation practice.') {
+        recommendedPlan = 'Fluent Bundle';
+      }
+    } else if (state.userPath === 'child') {
+      recommendedPlan = 'Spanish for Kids Program';
+    } else if (state.userPath === 'family') {
+      recommendedPlan = 'Family Classes';
+    } else if (state.userPath === 'company') {
+      recommendedPlan = 'Corporate Spanish Training';
+    }
+
+    // Simplified webhook payload with essential data only
     const webhookData = {
-      timestamp: new Date().toISOString(),
-      userPath: state.userPath,
-      answers: state.answers,
-      userData: userData,
-      source: 'spanish-learning-funnel'
+      name: userData.name,
+      email: userData.email,
+      phone: userData.phone,
+      userType: state.userPath,
+      recommendedPlan: recommendedPlan,
+      timestamp: new Date().toISOString()
     };
 
     try {

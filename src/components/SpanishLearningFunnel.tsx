@@ -283,31 +283,48 @@ const SpanishLearningFunnel: React.FC = () => {
       recommendedPlan = 'Corporate Spanish Training';
     }
 
-    // Simplified webhook payload with essential data only
-    const webhookData = {
-      name: userData.name,
-      email: userData.email,
-      phone: userData.phone,
-      userType: state.userPath,
-      recommendedPlan: recommendedPlan,
-      timestamp: new Date().toISOString()
+    // Send data to Make webhook
+    const sendDataToWebhook = async () => {
+      const webhookUrl = 'https://hook.us2.make.com/724c9677yer9rg20fe61t79fmolvtcp9';
+      
+      if (!webhookUrl) {
+        console.log("No webhook URL provided, skipping data submission");
+        return true;
+      }
+
+      // Build flat payload for Make automation
+      const payload = {
+        user_name: userData.name,
+        user_email: userData.email,
+        user_phone: userData.phone,
+        learner_type: state.userPath,
+        recommended_plan: recommendedPlan,
+        timestamp: new Date().toISOString(),
+        source: 'spanish-learning-funnel'
+      };
+
+      try {
+        console.log('Sending webhook payload:', payload);
+        
+        const response = await fetch(webhookUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          mode: 'no-cors',
+          body: JSON.stringify(payload),
+        });
+        
+        console.log('Webhook sent successfully');
+        return true;
+      } catch (error) {
+        console.error('Webhook error:', error);
+        setWebhookSent(false); // Reset flag on error to allow retry
+        return false;
+      }
     };
 
-    try {
-      await fetch('https://hook.us2.make.com/i6e9jo06c59bi7s5vfkt371l4uxtohsr', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        mode: 'no-cors',
-        body: JSON.stringify(webhookData),
-      });
-      console.log('Webhook triggered successfully', webhookData);
-    } catch (error) {
-      console.error('Webhook error:', error);
-      // Reset webhook flag on error to allow retry
-      setWebhookSent(false);
-    }
+    await sendDataToWebhook();
     
     // Wait then notify parent for redirect via postMessage
     setTimeout(() => {

@@ -10,7 +10,7 @@ const AdminDashboard: React.FC = () => {
     results: false
   });
 
-  const [webhookUrl, setWebhookUrl] = useState('https://hook.us2.make.com/i6e9jo06c59bi7s5vfkt371l4uxtohsr');
+  const [webhookUrl, setWebhookUrl] = useState('https://hook.us2.make.com/pt6126oh9vfke4t7cw6hoq54wh5iafv1');
   const [isEditingWebhook, setIsEditingWebhook] = useState(false);
 
   // Mock data for demonstration

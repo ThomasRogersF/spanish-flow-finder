@@ -285,7 +285,7 @@ const SpanishLearningFunnel: React.FC = () => {
 
     // Send data to Make webhook
     const sendDataToWebhook = async () => {
-      const webhookUrl = 'https://hook.us2.make.com/724c9677yer9rg20fe61t79fmolvtcp9';
+      const webhookUrl = 'https://hook.us2.make.com/pt6126oh9vfke4t7cw6hoq54wh5iafv1';
       
       if (!webhookUrl) {
         console.log("No webhook URL provided, skipping data submission");

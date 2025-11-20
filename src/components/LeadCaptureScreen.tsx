@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronLeft } from 'lucide-react';
 import ProgressBar from './ProgressBar';
+import { validateEmail } from '../lib/utils';
 
 interface LeadCaptureScreenProps {
   currentStep: number;
@@ -27,9 +28,26 @@ const LeadCaptureScreen: React.FC<LeadCaptureScreenProps> = ({
     agreedToTerms: false
   });
 
+  const [validationErrors, setValidationErrors] = useState({
+    email: ''
+  });
+
+  const validateEmailField = (email: string) => {
+    const validation = validateEmail(email);
+    setValidationErrors(prev => ({
+      ...prev,
+      email: validation.errorMessage
+    }));
+    return validation.isValid;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.name && formData.email && formData.agreedToTerms) {
+    
+    // Validate email
+    const isEmailValid = validateEmailField(formData.email);
+    
+    if (formData.name && isEmailValid && formData.agreedToTerms) {
       onSubmit(formData);
     }
   };
@@ -39,6 +57,20 @@ const LeadCaptureScreen: React.FC<LeadCaptureScreenProps> = ({
       ...prev,
       [field]: value
     }));
+    
+    // Clear email error when user starts typing again
+    if (field === 'email' && validationErrors.email) {
+      setValidationErrors(prev => ({
+        ...prev,
+        email: ''
+      }));
+    }
+  };
+
+  const handleEmailBlur = () => {
+    if (formData.email) {
+      validateEmailField(formData.email);
+    }
   };
 
   return (
@@ -113,10 +145,21 @@ const LeadCaptureScreen: React.FC<LeadCaptureScreenProps> = ({
                   type="email"
                   value={formData.email}
                   onChange={(e) => handleInputChange('email', e.target.value)}
-                  className="w-full px-4 py-3 rounded-2xl border border-gray-300 input-focus transition-all"
+                  onBlur={handleEmailBlur}
+                  className={`w-full px-4 py-3 rounded-2xl border transition-all ${
+                    validationErrors.email
+                      ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                      : 'border-gray-300 input-focus'
+                  }`}
                   placeholder="your.email@example.com"
                   required
                 />
+                {validationErrors.email && (
+                  <p className="text-red-500 text-sm mt-1 flex items-center">
+                    <span className="mr-1">⚠️</span>
+                    {validationErrors.email}
+                  </p>
+                )}
               </div>
               
               <div>

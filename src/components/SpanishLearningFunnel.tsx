@@ -292,11 +292,16 @@ const SpanishLearningFunnel: React.FC = () => {
         return true;
       }
 
-      // Build simple payload for Make automation
+      // Build enhanced payload with questionnaire responses
       const payload = {
         name: userData.name,
         email: userData.email,
-        phone: userData.phone
+        phone: userData.phone,
+        userPath: state.userPath,
+        recommendedPlan: recommendedPlan,
+        questionnaireResponses: state.answers,
+        responsesJson: JSON.stringify(state.answers),
+        submissionDate: new Date().toISOString()
       };
 
       try {

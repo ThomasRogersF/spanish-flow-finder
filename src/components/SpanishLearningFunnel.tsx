@@ -250,26 +250,40 @@ const SpanishLearningFunnel: React.FC = () => {
 
   // Function to create complete questionnaire responses with default values
   const createCompleteQuestionnaireResponses = (userPath: string, answers: Record<string, string>) => {
+    // Goal mapping for q2a answers
+    const goalMapping = {
+      "To travel with confidence and immerse myself in new cultures.": "goal_travel",
+      "For career advancement and to open professional doors.": "goal_career",
+      "To connect more deeply with my family, partner, or friends.": "goal_connect",
+      "For the joy of learning and to keep my mind sharp.": "goal_joy"
+    };
+
+    // Generate learning goal tag
+    const learningGoalTag = userPath === 'adult' ? (goalMapping[answers.q2a] || 'N/A') : 'N/A';
+
     // Define all possible questions with their default values
     const allPossibleQuestions = {
       // Initial question (answered by everyone)
       q1: answers.q1 || 'N/A',
-      
+
       // Adult path questions
       q2a: userPath === 'adult' ? (answers.q2a || 'N/A') : 'N/A',
       q3a: userPath === 'adult' ? (answers.q3a || 'N/A') : 'N/A',
       q4a: userPath === 'adult' ? (answers.q4a || 'N/A') : 'N/A',
-      
+
       // Child path questions
       q2b: userPath === 'child' ? (answers.q2b || 'N/A') : 'N/A',
       q3b: userPath === 'child' ? (answers.q3b || 'N/A') : 'N/A',
-      
+
       // Family path questions
       q2c: userPath === 'family' ? (answers.q2c || 'N/A') : 'N/A',
       q3c: userPath === 'family' ? (answers.q3c || 'N/A') : 'N/A',
-      q4c: userPath === 'family' ? (answers.q4c || 'N/A') : 'N/A'
+      q4c: userPath === 'family' ? (answers.q4c || 'N/A') : 'N/A',
+
+      // Learning goal tag
+      learningGoalTag: learningGoalTag
     };
-    
+
     return allPossibleQuestions;
   };
 
